@@ -8,7 +8,7 @@ var PDFJS = {};
   'use strict';
 
   PDFJS.build =
-'62e6b43';
+'cb05144';
 
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
@@ -30609,12 +30609,10 @@ var WorkerMessageHandler = {
         {
           url: source.url,
           progress: function getPDFProgress(evt) {
-            if (evt.lengthComputable) {
-              handler.send('DocProgress', {
-                loaded: evt.loaded,
-                total: evt.total
-              });
-            }
+            handler.send('DocProgress', {
+              loaded: evt.loaded,
+              total: evt.lengthComputable ? evt.total : void(0)
+            });
           },
           error: function getPDFError(e) {
             handler.send('DocError', 'Unexpected server response of ' +
