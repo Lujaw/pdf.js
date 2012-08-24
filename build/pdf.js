@@ -8,7 +8,7 @@ var PDFJS = {};
   'use strict';
 
   PDFJS.build =
-'cb05144';
+'e0796ce';
 
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
@@ -13683,8 +13683,13 @@ var PartialEvaluator = (function PartialEvaluatorClosure() {
 
       var flags = properties.flags;
       var differences = [];
-      var baseEncoding = !!(flags & FontFlags.Symbolic) ?
-                         Encodings.symbolsEncoding : Encodings.StandardEncoding;
+      var baseEncoding = Encodings.StandardEncoding;
+      // The Symbolic attribute can be misused for regular fonts
+      // Heuristic: we have to check if the font is a standard one also
+      if (!!(flags & FontFlags.Symbolic)) {
+        baseEncoding = !properties.file ? Encodings.symbolsEncoding :
+                                          Encodings.MacRomanEncoding;
+      }
       var hasEncoding = dict.has('Encoding');
       if (hasEncoding) {
         var encoding = dict.get('Encoding');
