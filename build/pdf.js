@@ -8,7 +8,7 @@ var PDFJS = {};
   'use strict';
 
   PDFJS.build =
-'b9777cf';
+'8e50da7';
 
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
@@ -1526,13 +1526,19 @@ var PDFPageProxy = (function PDFPageProxyClosure() {
     ensureFonts: function PDFPageProxy_ensureFonts(fonts, callback) {
       this.stats.time('Font Loading');
       // Convert the font names to the corresponding font obj.
+      var fontObjs = [];
       for (var i = 0, ii = fonts.length; i < ii; i++) {
-        fonts[i] = this.objs.objs[fonts[i]].data;
+        var obj = this.objs.objs[fonts[i]].data;
+        if (obj.error) {
+          warn('Error during font loading: ' + obj.error);
+          continue;
+        }
+        fontObjs.push(obj);
       }
 
       // Load all the fonts
       FontLoader.bind(
-        fonts,
+        fontObjs,
         function pageEnsureFontsFontObjs(fontObjs) {
           this.stats.timeEnd('Font Loading');
 
@@ -1771,7 +1777,12 @@ var WorkerTransport = (function WorkerTransportClosure() {
 
             // At this point, only the font object is created but the font is
             // not yet attached to the DOM. This is done in `FontLoader.bind`.
-            var font = new Font(name, file, properties);
+            var font;
+            try {
+              font = new Font(name, file, properties);
+            } catch (e) {
+              font = new ErrorFont(e);
+            }
             this.objs.resolve(id, font);
             break;
           default:
@@ -15680,13 +15691,19 @@ var Font = (function FontClosure() {
       return;
     }
 
+    // Some fonts might use wrong font types for Type1C or CIDFontType0C
+    var subtype = properties.subtype;
+    if (subtype == 'Type1C' && (type != 'Type1' && type != 'MMType1'))
+      type = 'Type1';
+    if (subtype == 'CIDFontType0C' && type != 'CIDFontType0')
+      type = 'CIDFontType0';
+
     var data;
     switch (type) {
       case 'Type1':
       case 'CIDFontType0':
         this.mimetype = 'font/opentype';
 
-        var subtype = properties.subtype;
         var cff = (subtype == 'Type1C' || subtype == 'CIDFontType0C') ?
           new CFFFont(file, properties) : new Type1Font(name, file, properties);
 
@@ -17411,6 +17428,20 @@ var Font = (function FontClosure() {
   };
 
   return Font;
+})();
+
+var ErrorFont = (function ErrorFontClosure() {
+  function ErrorFont(error) {
+    this.error = error;
+  }
+
+  ErrorFont.prototype = {
+    charsToGlyphs: function ErrorFont_charsToGlyphs() {
+      return [];
+    }
+  };
+
+  return ErrorFont;
 })();
 
 var CallothersubrCmd = (function CallothersubrCmdClosure() {
