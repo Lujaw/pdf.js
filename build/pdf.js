@@ -8,7 +8,7 @@ var PDFJS = {};
   'use strict';
 
   PDFJS.build =
-'8e50da7';
+'6d6e9c4';
 
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */

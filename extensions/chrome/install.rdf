@@ -53,6 +53,14 @@
       </Description>
     </em:localized>
 
+﻿    <em:localized>
+      <Description>
+        <em:locale>fi</em:locale>
+        <em:name>PDF Lukuohjelma</em:name>
+        <em:description>Näyttää PDF tiedostot suoraan Firefox:ssa HTML5:n avulla.</em:description>
+      </Description>
+    </em:localized>
+
     <em:localized>
       <Description>
         <em:locale>fr</em:locale>
@@ -157,7 +165,7 @@
     </em:localized>
 
     <em:name>PDF Viewer</em:name>
-    <em:version>0.4.48</em:version>
+    <em:version>0.4.52</em:version>
 
     <!-- Firefox -->
     <em:targetApplication>
