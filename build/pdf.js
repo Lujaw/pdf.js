@@ -22,7 +22,7 @@ var PDFJS = {};
   'use strict';
 
   PDFJS.build =
-'c69013e';
+'59016bc';
 
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
@@ -14663,6 +14663,8 @@ var FontLoader = {
       src += '<script type="application/javascript">';
       src += '  window.onload = function fontLoaderOnload() {\n';
       src += '    parent.postMessage("' + requestId + '", "*");\n';
+      // Chrome stuck on loading (see chrome issue 145227) - resetting url
+      src += '    window.location = "about:blank";\n';
       src += '  }';
       // Hack so the end script tag isn't counted if this is inline JS.
       src += '</scr' + 'ipt></head><body>';
