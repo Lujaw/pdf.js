@@ -22,7 +22,7 @@ var PDFJS = {};
   'use strict';
 
   PDFJS.build =
-'9fe9297';
+'bd0e422';
 
 /* -*- Mode: Java; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* vim: set shiftwidth=2 tabstop=2 autoindent cindent expandtab: */
@@ -28002,17 +28002,6 @@ Shadings.RadialAxial = (function RadialAxialClosure() {
     return {
       type: 'Pattern',
       getPattern: function RadialAxial_getPattern(ctx) {
-        var curMatrix = ctx.mozCurrentTransform;
-        if (curMatrix) {
-          var userMatrix = ctx.mozCurrentTransformInverse;
-
-          p0 = Util.applyTransform(p0, curMatrix);
-          p0 = Util.applyTransform(p0, userMatrix);
-
-          p1 = Util.applyTransform(p1, curMatrix);
-          p1 = Util.applyTransform(p1, userMatrix);
-        }
-
         var grad;
         if (type == PatternType.AXIAL)
           grad = ctx.createLinearGradient(p0[0], p0[1], p1[0], p1[1]);
@@ -28100,7 +28089,6 @@ var TilingPattern = (function TilingPatternClosure() {
     TODO('TilingType: ' + tilingType);
 
     this.curMatrix = ctx.mozCurrentTransform;
-    this.invMatrix = ctx.mozCurrentTransformInverse;
     this.ctx = ctx;
     this.type = 'Pattern';
 
