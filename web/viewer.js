@@ -1139,9 +1139,7 @@ var PDFView = {
 
     var currentPage = this.pages[this.page - 1];
 
-    if (this.isFullscreen) {
-      this.parseScale('page-fit', true);
-    }
+    this.parseScale(this.currentScaleValue, true);
 
     this.renderHighestPriority();
 
