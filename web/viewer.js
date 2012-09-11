@@ -35,7 +35,7 @@ var RenderingStates = {
   FINISHED: 3
 };
 
-PDFJS.workerSrc = '../build/pdf.js';
+  PDFJS.workerSrc = '../build/pdf.js';
 
 var mozL10n = document.mozL10n || document.webL10n;
 
